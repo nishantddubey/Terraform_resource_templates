@@ -16,12 +16,9 @@ variable "sql_server_admin_username" {
 
 variable "sql_server_admin_password" {
   description = "The administrator password for the SQL Server"
-  sensitive = true
+  sensitive   = true
 }
 
-variable "sql_database_name" {
-  description = "The name of the SQL Database"
-}
 
 variable "sql_database_edition" {
   description = "The edition of the SQL Database (e.g., 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical')"
@@ -50,15 +47,20 @@ variable "tags" {
 }
 variable "sql_database_sku_name" {
   description = "e.g. GP_Gen5_2"
-  default = "GP_Gen5_2"
+  default     = "GP_Gen5_2"
 }
 
 variable "ip_addresses" {
   description = "list the ips which you want to whitelist"
-  type = map(string)
+  type        = map(string)
   default = {
-    "nishant" = "49.204.77.222" 
-    "room" = "115.99.233.0"
+    "nishant" = "49.204.77.222"
+    "room"    = "115.99.233.0"
     # Add more IP addresses as needed
   }
+}
+# Provide the name of  databases that  you required like ["db1","db2","d3"]
+variable "sql_database_name" {
+  description = "List of names for the SQL databases"
+  type        = set(string)
 }

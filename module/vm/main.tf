@@ -2,14 +2,14 @@
 # Generate SSH key pair locally using the TLS provider
 resource "tls_private_key" "ssh_key" {
   algorithm = "RSA"
-  rsa_bits  = 4096  # Optional: specify the key length
+  rsa_bits  = 4096 # Optional: specify the key length
 }
 
-# Save the private key to a local file with secure permissions
+# Save the private key to a local file with secure permissions and save the keys in a keypair named folder in you working directory
 resource "local_file" "ssh_private_key" {
-  content        = tls_private_key.ssh_key.private_key_pem
-  filename       = "${path.root}/keypairs/id_rsa.pem"
-  file_permission = "0600"  # Ensure secure permissions for the private key file
+  content         = tls_private_key.ssh_key.private_key_pem
+  filename        = "${path.root}/keypairs/id_rsa.pem"
+  file_permission = "0600" # Ensure secure permissions for the private key file
 }
 
 # Save the public key to a local file
@@ -56,7 +56,7 @@ resource "azurerm_public_ip" "vm_public_ip" {
   name                = "${var.vm_name}-public-ip"
   location            = var.location
   resource_group_name = var.resource_group_name
-  allocation_method   = "Static"  # Set to Static to ensure immediate availability
+  allocation_method   = "Static" # Set to Static to ensure immediate availability
 }
 
 # Network Interface for the VM
@@ -75,13 +75,13 @@ resource "azurerm_network_interface" "nic" {
 
 # Virtual Machine Configuration
 resource "azurerm_virtual_machine" "vm" {
-  name                  = var.vm_name
-  count                 = 1
-  location              = var.location
-  resource_group_name   = var.resource_group_name
-  vm_size               = var.vm_size
-  network_interface_ids = [azurerm_network_interface.nic.id]
-  delete_os_disk_on_termination = true  #if you dont want to delete disk then value should be "false"
+  name                          = var.vm_name
+  count                         = 1
+  location                      = var.location
+  resource_group_name           = var.resource_group_name
+  vm_size                       = var.vm_size
+  network_interface_ids         = [azurerm_network_interface.nic.id]
+  delete_os_disk_on_termination = true #if you dont want to delete disk then value should be "false"
 
   # OS Disk configuration
   storage_os_disk {
@@ -91,9 +91,9 @@ resource "azurerm_virtual_machine" "vm" {
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
-  
 
-  
+
+
 
   # OS Profile for Linux VM
   os_profile {
@@ -107,7 +107,7 @@ resource "azurerm_virtual_machine" "vm" {
     ssh_keys {
       path     = "/home/${var.admin_username}/.ssh/authorized_keys"
       key_data = tls_private_key.ssh_key.public_key_openssh
-    
+
     }
   }
 
@@ -128,5 +128,5 @@ resource "azurerm_virtual_machine" "vm" {
 output "public_ip_address" {
   value       = azurerm_public_ip.vm_public_ip.ip_address
   description = "The public IP address of the virtual machine."
-  depends_on  = [azurerm_virtual_machine.vm]  # Ensure this output waits for the VM creation
+  depends_on  = [azurerm_virtual_machine.vm] # Ensure this output waits for the VM creation
 }

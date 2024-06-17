@@ -35,7 +35,8 @@ output "sql_server_fqdn" {
   value = module.sql_server_db.sql_server_fqdn
 }
 
-# Output the SQL Database name
-output "sql_database_name" {
-  value = module.sql_server_db.sql_database_name
+
+# Output the SQL databases created
+output "sql_database_names" {
+  value = module.sql_server_db.sql_database_names
 }

@@ -8,7 +8,7 @@ variable "location" {
 }
 variable "vnet_name" {
   description = "Azure vnet where you want create your machine"
-  
+
 }
 
 variable "subnet_name" {

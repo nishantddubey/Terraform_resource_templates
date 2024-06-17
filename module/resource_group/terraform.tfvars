@@ -1,2 +1,2 @@
-name = "resource-group-1"
+name     = "resource-group-1"
 location = "East US"
